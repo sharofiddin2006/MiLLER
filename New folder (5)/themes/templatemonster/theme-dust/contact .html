@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UniPRO">
+    <meta name="keywords"
+        content="blog, business card, creative, creative portfolio, cv theme, online resume, personal, portfolio, professional cv, responsive portfolio, resume, resume theme, vcard">
+    <meta name="author" content="UniPRO">
+    <title>Shayzakov Sharofiddin - Personal Portfolio Website Template</title>
+    <!--favicon-img-->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="../../../ajax/libs/gsap/3.2.6/gsap.min.js"></script>
+</head>
+
+<body>
+    <div id="contact" class="container">
+        <h2>Ro'yxatdan o'tish</h2>
+        <form id="registerForm">
+            <label for="name">Ismingiz:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Telefon raqami:</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <button type="submit">Yuborish</button>
+        </form>
+        <div id="response"></div>
+    </div>
+    <script src="script.js"></script>
+    <script>document.getElementById('registerForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Foydalanuvchi ma'lumotlarini olish
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            // Telegram bot uchun Token va Chat ID
+            const telegramToken = '7469815602:AAG-8i0hkP111mjufpE5iM916KJtKCKaGNI';
+            const chatId = '5450979171';
+
+            // Yuboriladigan xabarni shakllantirish
+            const message = `Yangi foydalanuvchi ro'yxatdan o'tdi:\n\nIsmi: ${name}\nEmail: ${email}\nTelefon raqami: ${phone}`;
+
+            // Telegram API ga so'rov yuborish
+            fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        document.getElementById('response').textContent = "Ma'lumot muvaffaqiyatli yuborildi!";
+                    } else {
+                        document.getElementById('response').textContent = "Xatolik yuz berdi, qayta urinib ko'ring.";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('response').textContent = "Tarmoqda xatolik yuz berdi.";
+                });
+        });</script>
+</body>
+
+</html>
